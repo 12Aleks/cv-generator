@@ -1,19 +1,19 @@
 'use client';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import AccordionItem from './AccordionItem';
+import { FormData } from "@/types/types"
 
 export default function ProfileForm() {
-    const { register, handleSubmit } = useForm();
-    const onSubmit = (data: any) => console.log(data);
+    const { register } = useFormContext<FormData>();
 
     return (
         <AccordionItem title="Profil">
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label className="text-sm text-neutral-700 tracking-wide">Opis</label>
-                <textarea rows={6} {...register('profile')}
-                          className="w-full border p-2 rounded" />
-                <button type="submit" className="btn mt-2">Zapisz</button>
-            </form>
+            <label className="text-sm text-neutral-700 tracking-wide">Opis</label>
+            <textarea
+                rows={6}
+                {...register('profile')}
+                className="w-full p-2 rounded bg-gray-50 border border-gray-300"
+            />
         </AccordionItem>
     );
 }

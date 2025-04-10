@@ -1,10 +1,17 @@
-import {z} from 'zod';
+import { z } from 'zod';
+
+export const languageSchema = z.object({
+    id: z.string(),
+    name: z.string().min(1, 'Name is required'),
+    level: z.string().min(1, 'Level is required'),
+    language: z.string().min(1, 'Language is required'),
+});
 
 export const personalInfoSchema = z.object({
-    firstName: z.string().min(2, 'Min 2 znaki'),
-    lastName: z.string().min(2, 'Min 2 znaki'),
-    title: z.string().max(70, 'Max 70 znakow'),
-    email: z.string().email('Nieprawidłowy email'),
+    firstName: z.string().min(2, 'Min 2 characters'),
+    lastName: z.string().min(2, 'Min 2 characters'),
+    title: z.string().max(70, 'Max 70 characters'),
+    email: z.string().email('Invalid email'),
     phone: z.string().optional(),
     citizenship: z.string().optional(),
     site: z.string().optional(),
@@ -15,4 +22,6 @@ export const personalInfoSchema = z.object({
     maritalStatus: z.string().optional(),
     linkedin: z.string().optional(),
     customField: z.string().optional(),
+    profile: z.string().optional(),
+    languages: z.array(languageSchema),
 });
