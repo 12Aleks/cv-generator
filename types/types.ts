@@ -6,6 +6,11 @@ export type Language = {
     language: string;
 };
 
+export type Hobby = {
+    id: string;
+    description: string;
+}
+
 export type FormData = {
     firstName: string;
     lastName: string;
@@ -22,5 +27,7 @@ export type FormData = {
     linkedin?: string;
     customField?: string;
     profile?: string;
-    languages: Language[];
+    languages?: Language[];
+    hobby?: Hobby[];
+    footer?: string;
 };

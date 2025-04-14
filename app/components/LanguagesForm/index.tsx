@@ -1,5 +1,5 @@
 'use client';
-import { useFormContext } from 'react-hook-form';
+
 import { useState } from 'react';
 import AccordionItem from '@/app/components/AccordionItem';
 import SortableLanguageItem from './SortableLanguageItem';
@@ -18,10 +18,10 @@ import {
     arrayMove,
 } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
+import {Plus} from "lucide-react";
 
 export default function LanguagesForm() {
-    const { register } = useFormContext();
-    const [languages, setLanguages] = useState<Language[]>([]);
+    const [languages, setLanguages] = useState<Language[]>([{ id: crypto.randomUUID(), name: '', level: 'A1', language: 'Unknown' }]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -60,7 +60,6 @@ export default function LanguagesForm() {
     return (
         <AccordionItem title="Języki">
             <div className="space-y-3">
-                <h3 className="text-lg font-semibold">Języki</h3>
                 <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
@@ -87,9 +86,9 @@ export default function LanguagesForm() {
                 <button
                     type="button"
                     onClick={addLanguage}
-                    className="mt-2 px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm cursor-pointer"
+                    className="mt-2 px-3 py-2 btn-custom cursor-pointer flex items-center justify-between"
                 >
-                    + Dodaj język
+                    <Plus className="w-4 h-4 text-white me-1" /> Dodaj język
                 </button>
             </div>
         </AccordionItem>

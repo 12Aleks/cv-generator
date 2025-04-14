@@ -25,7 +25,8 @@ export default function Home() {
             linkedin: "",
             customField: "",
             profile: "",
-            languages: [{ id: crypto.randomUUID(), name: '', level: 'A1', language: 'Unknown' }]
+            languages: [{ id: crypto.randomUUID(), name: '', level: 'A1', language: 'Unknown' }],
+            footer: "",
         }
     });
 

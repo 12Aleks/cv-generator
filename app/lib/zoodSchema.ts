@@ -7,6 +7,11 @@ export const languageSchema = z.object({
     language: z.string().min(1, 'Language is required'),
 });
 
+export const hobbySchema = z.object({
+    id: z.string(),
+    description: z.string(),
+})
+
 export const personalInfoSchema = z.object({
     firstName: z.string().min(2, 'Min 2 characters'),
     lastName: z.string().min(2, 'Min 2 characters'),
@@ -23,5 +28,7 @@ export const personalInfoSchema = z.object({
     linkedin: z.string().optional(),
     customField: z.string().optional(),
     profile: z.string().optional(),
-    languages: z.array(languageSchema),
+    languages: z.array(languageSchema).optional(),
+    hobby: z.array(hobbySchema).optional(),
+    footer: z.string().optional(),
 });
