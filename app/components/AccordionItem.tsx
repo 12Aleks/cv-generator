@@ -14,10 +14,12 @@ export default function AccordionItem({ title, children }: Props) {
     const contentRef = useRef<HTMLDivElement>(null);
 
     return (
-        <div className="border rounded-lg border-solid border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="border rounded-lg border-solid border-gray-200 dark:border-gray-300 overflow-hidden z-50 relative">
             <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 font-medium flex items-center justify-between"
+                onClick={(e) => {
+                    e.stopPropagation()
+                    setIsOpen(!isOpen)}}
+                className="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 font-medium flex items-center justify-between"
             >
                 {title}
                 <ChevronDown

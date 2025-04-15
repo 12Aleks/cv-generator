@@ -1,5 +1,5 @@
 'use client';
-
+import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import AccordionItem from '@/app/components/AccordionItem';
 import SortableLanguageItem from './SortableLanguageItem';
@@ -21,7 +21,7 @@ import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifi
 import {Plus} from "lucide-react";
 
 export default function LanguagesForm() {
-    const [languages, setLanguages] = useState<Language[]>([{ id: crypto.randomUUID(), name: '', level: 'A1', language: 'Unknown' }]);
+    const [languages, setLanguages] = useState<Language[]>([{ id: uuidv4(), name: '', level: 'A1', language: 'Unknown' }]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -32,7 +32,7 @@ export default function LanguagesForm() {
     const addLanguage = () => {
         setLanguages((prev) => [
             ...prev,
-            { id: crypto.randomUUID(), name: '', level: 'A1', language: 'Unknown' },
+            { id: uuidv4(), name: '', level: 'A1', language: 'Unknown' },
         ]);
     };
 
@@ -86,7 +86,7 @@ export default function LanguagesForm() {
                 <button
                     type="button"
                     onClick={addLanguage}
-                    className="mt-2 px-3 py-2 btn-custom cursor-pointer flex items-center justify-between"
+                    className="mt-2 btn-custom flex items-center justify-between ml-auto"
                 >
                     <Plus className="w-4 h-4 text-white me-1" /> Dodaj język
                 </button>

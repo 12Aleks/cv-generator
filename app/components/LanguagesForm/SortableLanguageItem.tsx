@@ -36,12 +36,12 @@ function SortableLanguageItem({ id, index, lang, updateLang, removeLang,}: IProp
                 value={lang.name}
                 onChange={(e) => updateLang(index, { name: e.target.value })}
                 placeholder="Język"
-                className="input"
+                className="input bg-gray-50"
             />
             <select
                 value={lang.level}
                 onChange={(e) => updateLang(index, { level: e.target.value })}
-                className="input w-24"
+                className="input w-24 bg-gray-50"
             >
                 {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((lvl) => (
                     <option key={lvl} value={lvl}>

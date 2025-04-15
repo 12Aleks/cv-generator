@@ -2,6 +2,7 @@
 import { useFormContext } from 'react-hook-form';
 import AccordionItem from './AccordionItem';
 import { FormData } from "@/types/types"
+import TiptapEditor from "@/app/components/TiptapEditor";
 
 export default function ProfileForm() {
     const { register } = useFormContext<FormData>();
@@ -9,11 +10,7 @@ export default function ProfileForm() {
     return (
         <AccordionItem title="Profil">
             <label className="text-sm text-neutral-700 tracking-wide">Opis</label>
-            <textarea
-                rows={6}
-                {...register('profile')}
-                className="w-full p-2 rounded bg-gray-50 border border-gray-300"
-            />
+            <TiptapEditor name="profile" />
         </AccordionItem>
     );
 }

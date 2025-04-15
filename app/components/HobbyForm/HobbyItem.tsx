@@ -16,7 +16,7 @@ const HobbyItem = ({id, index, hobby,updateHobby, removeHobby}: IProps) => {
             <input
                 value={hobby.description}
                 onChange={(e) => updateHobby(index, { description: e.target.value })}
-                className="input"
+                className="input bg-gray-50"
             />
             <button
                 type="button"

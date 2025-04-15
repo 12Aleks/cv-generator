@@ -3,9 +3,9 @@
 import { useFormContext } from 'react-hook-form';
 import { useState } from 'react';
 import { EllipsisVertical, Plus } from 'lucide-react';
-import AccordionItem from './AccordionItem';
+import AccordionItem from '../AccordionItem';
 import { FormData } from '@/types/types';
-import PhotoUploader from '@/app/components/PhotoUploader';
+import PhotoUploader from './PhotoUploader';
 
 const optionalFields = [
     { name: 'citizenship', label: 'Obywatelstwo' },
@@ -19,7 +19,7 @@ const optionalFields = [
     { name: 'customField', label: 'Pole niestandardowe' },
 ];
 
-export default function PersonalInfoForm() {
+export default function Index() {
     const { register, formState: { errors } } = useFormContext<FormData>();
     const [activeFields, setActiveFields] = useState<string[]>(['citizenship', 'site']);
 
@@ -41,7 +41,7 @@ export default function PersonalInfoForm() {
                 <div className="flex-1 grid grid-cols-2 gap-4">
                     <div>
                         <label className="text-sm text-neutral-700 tracking-wide">Imię</label>
-                        <input {...register('firstName')} className="w-full p-2 rounded bg-gray-50 border border-gray-300" />
+                        <input {...register('firstName')} className="w-full p-2 rounded bg-gray-50 border border-gray-300"/>
                         {errors.firstName && <p className="text-red-500">{errors.firstName.message}</p>}
                     </div>
                     <div>
