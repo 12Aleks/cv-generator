@@ -5,18 +5,8 @@ import AccordionItem from '@/app/components/AccordionItem';
 import SortableLanguageItem from './SortableLanguageItem';
 import { Language } from '@/types/types';
 
-import {
-    DndContext,
-    closestCenter,
-    PointerSensor,
-    useSensor,
-    useSensors,
-} from '@dnd-kit/core';
-import {
-    SortableContext,
-    verticalListSortingStrategy,
-    arrayMove,
-} from '@dnd-kit/sortable';
+import {DndContext, closestCenter, PointerSensor, useSensor, useSensors} from '@dnd-kit/core';
+import {SortableContext, verticalListSortingStrategy, arrayMove} from '@dnd-kit/sortable';
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 import {Plus} from "lucide-react";
 
