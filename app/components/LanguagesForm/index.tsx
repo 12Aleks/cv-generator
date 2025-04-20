@@ -48,7 +48,7 @@ export default function LanguagesForm() {
     };
 
     return (
-        <AccordionItem title="Języki">
+        <AccordionItem titleName="languagesTitle" defaultTitle="Języki">
             <div className="space-y-3">
                 <DndContext
                     sensors={sensors}

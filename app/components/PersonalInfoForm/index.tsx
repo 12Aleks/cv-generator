@@ -32,7 +32,7 @@ export default function Index() {
     };
 
     return (
-        <AccordionItem title="Dane osobowe">
+        <AccordionItem titleName="personalInfoTitle" defaultTitle="Dane osobowe">
             <div className="flex gap-4">
                 <div>
                     <label className="text-sm text-neutral-700 tracking-wide">Zdjęcie</label>

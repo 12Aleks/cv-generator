@@ -1,3 +1,4 @@
+import ExperienceForm from "@/app/components/ExperienceForm";
 
 export type Language = {
     id: string;
@@ -11,7 +12,12 @@ export type Hobby = {
     description: string;
 }
 
+export type TitleFieldsOnly = Extract<{
+    [K in keyof FormData]: NonNullable<FormData[K]> extends string ? K : never
+}[keyof FormData], string>;
+
 export type FormData = {
+    personalInfoTitle: string;
     firstName: string;
     lastName: string;
     title: string;
@@ -26,8 +32,14 @@ export type FormData = {
     maritalStatus?: string;
     linkedin?: string;
     customField?: string;
+    profileTitle?: string;
     profile?: string;
+    experienceTitle?: string;
+    skillsTitle?: string;
+    languagesTitle?: string;
     languages?: Language[];
+    hobbyTitle?: string;
     hobby?: Hobby[];
+    footerTitle?: string;
     footer?: string;
 };

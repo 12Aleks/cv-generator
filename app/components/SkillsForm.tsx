@@ -7,7 +7,7 @@ export default function SkillsForm() {
     const { register } = useFormContext<FormData>();
 
     return (
-        <AccordionItem title="Umiejętności">
+        <AccordionItem titleName="skillsTitle" defaultTitle="Umiejętności">
             Test
             {/*<textarea*/}
             {/*    {...register('skills')}*/}

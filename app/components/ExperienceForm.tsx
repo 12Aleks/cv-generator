@@ -7,7 +7,7 @@ export default function ExperienceForm() {
     const { register } = useFormContext<FormData>();
 
     return (
-        <AccordionItem title="Doświadczenie zawodowe">
+        <AccordionItem titleName="experienceTitle" defaultTitle="Doświadczenie zawodowe">
             Test
             {/*<input {...register('position')} placeholder="Stanowisko" className="input" />*/}
             {/*<input {...register('company')} placeholder="Firma" className="input" />*/}

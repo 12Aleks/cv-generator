@@ -6,7 +6,7 @@ import {FormData} from "@/types/types";
 const Footer = () => {
     const { register } = useFormContext<FormData>();
     return (
-        <AccordionItem title="Stopka">
+        <AccordionItem titleName="footerTitle" defaultTitle="Stopka">
             <label className="text-sm text-neutral-700 tracking-wide">Zawartość</label>
             <textarea
                 rows={6}

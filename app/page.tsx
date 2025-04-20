@@ -11,6 +11,7 @@ export default function Home() {
     const methods = useForm<FormData>({
         resolver: zodResolver(personalInfoSchema),
         defaultValues: {
+            personalInfoTitle: "Dane osobowe",
             firstName: "",
             lastName: "",
             title: "",
@@ -25,8 +26,15 @@ export default function Home() {
             maritalStatus: "",
             linkedin: "",
             customField: "",
+            profileTitle: "Profil",
             profile: "",
+            experienceTitle: "Doświadczenie zawodowe",
+            skillsTitle: "Umiejętności",
+            languagesTitle: "Języki",
             languages: [{ id: uuidv4(), name: '', level: 'A1', language: 'Unknown' }],
+            hobbyTitle: "Hobby i zainteresowania",
+            hobby: [{ id: uuidv4(), description: ''}],
+            footerTitle: "Stopka",
             footer: "",
         }
     });

@@ -1,20 +1,25 @@
 'use client';
 
-import {useState, ReactNode, useRef, useEffect} from 'react';
-import {ChevronDown, SquarePen} from 'lucide-react';
-import {Tooltip} from 'react-tooltip'
+import { useState, ReactNode, useRef, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { ChevronDown, SquarePen } from 'lucide-react';
+import { Tooltip } from 'react-tooltip';
 import clsx from 'clsx';
+import {FormData, TitleFieldsOnly} from '@/types/types';
 
 interface Props {
-    title: string;
+    titleName: TitleFieldsOnly;
+    defaultTitle: string;
     children: ReactNode;
 }
 
-export default function AccordionItem({title, children}: Props) {
+export default function AccordionItem({ titleName, defaultTitle, children }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [editableTitle, setEditableTitle] = useState(title);
     const contentRef = useRef<HTMLDivElement>(null);
+
+    const { register, setValue, watch } = useFormContext<FormData>();
+    const editableTitle = watch(titleName) ?? defaultTitle;
 
     const handleEditClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -23,7 +28,7 @@ export default function AccordionItem({title, children}: Props) {
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
-        setEditableTitle(e.target.value);
+        setValue(titleName, e.target.value);
     };
 
     const handleTitleBlur = () => {
@@ -31,8 +36,8 @@ export default function AccordionItem({title, children}: Props) {
     };
 
     useEffect(() => {
-        isOpen && handleTitleBlur()
-    }, [isOpen])
+        if (isOpen) handleTitleBlur();
+    }, [isOpen]);
 
     return (
         <div className="overflow-hidden z-20 relative">
@@ -43,8 +48,7 @@ export default function AccordionItem({title, children}: Props) {
                 }}
                 className="w-full text-left px-4 py-2 font-medium flex items-center justify-between"
             >
-
-                {isEditing ? (
+                {isEditing && editableTitle ? (
                     <div>
                         <input
                             type="text"
@@ -54,32 +58,30 @@ export default function AccordionItem({title, children}: Props) {
                             onBlur={handleTitleBlur}
                             className="text-gray-500 text-lg focus:outline-none"
                         />
-                        <hr className="border-t border-gray-400"/>
+                        <hr className="border-t border-gray-400" />
                     </div>
                 ) : (
                     <span className="text-lg text-gray-800">{editableTitle}</span>
                 )}
 
-
-                <div className="flex gap-3">
+                <div className="flex gap-3 relative">
                     {isOpen && (
                         <>
+                            <Tooltip id={"tooltip-edit" + titleName} place="left"/>
                             <div
-                                className="border border-gray-300 rounded-md text-sm font-medium text-gray-900 py-2 px-1.5 relative z-10"
+                                className="border border-gray-300 rounded-md text-sm font-medium text-gray-900 py-2 px-1.5"
                                 onClick={handleEditClick}
-                                data-tooltip-id="tooltip-edit"
+                                data-tooltip-id={"tooltip-edit" + titleName}
                                 data-tooltip-content="Edytuj tytuł"
                             >
-                                <SquarePen className="w-5 h-6 cursor-pointer"/>
+                                <SquarePen className="w-5 h-6 cursor-pointer" />
                             </div>
-                            <Tooltip id="tooltip-edit" place="top"/>
                         </>
-
                     )}
-                    <Tooltip id="tooltip-edit-1" place="top"/>
+                    <Tooltip id={"tooltip-edit-1" + titleName} place={isOpen ? "bottom-start" : "left" } />
                     <div
-                        className="border border-gray-300 rounded-md text-sm font-medium text-gray-900 py-2 px-1.5"
-                        data-tooltip-id="tooltip-edit-1"
+                        className="border border-gray-300 rounded-md text-sm font-medium text-gray-900 py-2 px-1.5 relative"
+                        data-tooltip-id={"tooltip-edit-1" + titleName}
                         data-tooltip-content={isOpen ? 'Zwiń sekcję' : 'Rozwiń sekcję'}
                     >
                         <ChevronDown
@@ -87,7 +89,6 @@ export default function AccordionItem({title, children}: Props) {
                                 'h-5 w-5 transform transition-transform duration-300 cursor-pointer',
                                 isOpen ? 'rotate-180' : 'rotate-0'
                             )}
-
                         />
                     </div>
                 </div>

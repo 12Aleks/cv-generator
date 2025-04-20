@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import SkillsForm from "@/app/components/SkillsForm";
 
 export const languageSchema = z.object({
     id: z.string(),
@@ -13,6 +14,7 @@ export const hobbySchema = z.object({
 })
 
 export const personalInfoSchema = z.object({
+    personalInfoTitle: z.string(),
     firstName: z.string().min(2, 'Min 2 characters'),
     lastName: z.string().min(2, 'Min 2 characters'),
     title: z.string().max(70, 'Max 70 characters'),
@@ -27,8 +29,14 @@ export const personalInfoSchema = z.object({
     maritalStatus: z.string().optional(),
     linkedin: z.string().optional(),
     customField: z.string().optional(),
+    profileTitle: z.string().optional(),
     profile: z.string().optional(),
+    experienceTitle: z.string().optional(),
+    skillsTitle: z.string().optional(),
+    languagesTitle: z.string().optional(),
     languages: z.array(languageSchema).optional(),
+    hobbyTitle: z.string().optional(),
     hobby: z.array(hobbySchema).optional(),
+    footerTitle: z.string().optional(),
     footer: z.string().optional(),
 });

@@ -10,7 +10,7 @@ const SortableItem = ({id, children}: { id: string; children: ReactNode }) => {
         <div
             ref={setNodeRef}
             className={clsx(
-                "flex items-center gap-2 mb-0 border-t-1 border-stone-300 py-5 bg-white transition-all duration-300 relative z-0",
+                "flex items-center gap-2 mb-0 border-t-1 border-stone-300 py-3 2xl:py-5 bg-white transition-all duration-300 relative z-0",
                 isDragging && "opacity-50 scale-95 shadow-md"
             )}
             {...attributes}

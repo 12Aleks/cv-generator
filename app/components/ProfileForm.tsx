@@ -8,7 +8,7 @@ export default function ProfileForm() {
     const { register } = useFormContext<FormData>();
 
     return (
-        <AccordionItem title="Profil">
+        <AccordionItem titleName="profileTitle" defaultTitle="Profil">
             <label className="text-sm text-neutral-700 tracking-wide">Opis</label>
             <TiptapEditor name="profile" />
         </AccordionItem>
