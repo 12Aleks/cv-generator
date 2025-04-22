@@ -33,12 +33,12 @@ export default function Index() {
 
     return (
         <AccordionItem titleName="personalInfoTitle" defaultTitle="Dane osobowe">
-            <div className="flex gap-4">
+            <div className="flex gap-4 pb-2 2xl:pb-3">
                 <div>
                     <label className="text-sm text-neutral-700 tracking-wide">Zdjęcie</label>
                     <PhotoUploader />
                 </div>
-                <div className="flex-1 grid grid-cols-2 gap-4">
+                <div className="flex-1 grid grid-cols-2 gap-4 ">
                     <div>
                         <label className="text-sm text-neutral-700 tracking-wide">Imię</label>
                         <input {...register('firstName')} className="w-full p-2 rounded bg-gray-50 border border-gray-300"/>
@@ -49,7 +49,7 @@ export default function Index() {
                         <input {...register('lastName')} className="w-full p-2 rounded bg-gray-50 border border-gray-300" />
                         {errors.lastName && <p className="text-red-500">{errors.lastName.message}</p>}
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-2 mt-auto">
                         <label className="text-sm text-neutral-700 tracking-wide">Nagłówek</label>
                         <input {...register('title')} className="w-full p-2 rounded bg-gray-50 border border-gray-300" />
                         {errors.title && <p className="text-red-500">{errors.title.message}</p>}
@@ -57,13 +57,13 @@ export default function Index() {
                 </div>
             </div>
 
-            <div>
+            <div className="pb-2 2xl:pb-3">
                 <label className="text-sm text-neutral-700 tracking-wide">Email</label>
                 <input {...register('email')} className="w-full bg-gray-50 border border-gray-300 p-2 rounded" />
                 {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
 
-            <div>
+            <div className="pb-2 2xl:pb-3">
                 <label className="text-sm text-neutral-700 tracking-wide">Telefon</label>
                 <input {...register('phone')} className="w-full bg-gray-50 border border-gray-300 p-2 rounded" />
             </div>
@@ -71,7 +71,7 @@ export default function Index() {
             {activeFields.map((fieldName) => {
                 const label = optionalFields.find((f) => f.name === fieldName)?.label;
                 return (
-                    <div key={fieldName} className="relative">
+                    <div key={fieldName} className="relative pb-2 2xl:pb-3">
                         <label className="text-sm text-neutral-700 tracking-wide">{label}</label>
                         <input {...register(fieldName as keyof FormData)} className="w-full bg-gray-50 border border-gray-300 p-2 rounded" />
                         <button
@@ -85,7 +85,7 @@ export default function Index() {
                 );
             })}
 
-            <div className="flex flex-wrap gap-2 mt-5">
+            <div className="flex flex-wrap gap-2 mt-3 2xl:mt-5">
                 {optionalFields
                     .filter((f) => !activeFields.includes(f.name))
                     .map((f) => (
@@ -93,7 +93,7 @@ export default function Index() {
                             key={f.name}
                             type="button"
                             onClick={() => handleAddField(f.name)}
-                            className="border border-gray-400 px-2 py-1 rounded text-sm cursor-pointer flex items-center justify-between text-neutral-700 tracking-wide"
+                            className="border border-gray-400 transition-all duration-300 hover:bg-stone-50 px-2 py-1 rounded text-sm cursor-pointer flex items-center justify-between text-neutral-700 tracking-wide"
                         >
                             <Plus className="w-4 h-4 text-neutral-500 me-1" /> {f.label}
                         </button>

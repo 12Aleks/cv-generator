@@ -14,7 +14,7 @@ export default function PhotoUploader() {
     });
 
     return (
-        <div {...getRootProps()} className="w-32 h-32 border border-gray-300 rounded overflow-hidden cursor-pointer flex items-center justify-center">
+        <div {...getRootProps()} className="w-32 h-32 border border-gray-300 bg-gray-50 rounded overflow-hidden cursor-pointer flex items-center justify-center">
             <input {...getInputProps()} />
             {file ? (
                 <Image
