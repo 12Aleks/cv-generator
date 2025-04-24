@@ -11,11 +11,9 @@ import HobbyForm from '@/app/components/HobbyForm';
 import Footer from '@/app/components/Footer';
 import SortableFormWrapper from './SortableFormWrapper';
 
-interface FormsSectionProps {
-    methods: UseFormReturn<FormData>;
-}
 
-export default function FormsSection({ methods }: FormsSectionProps) {
+
+export default function FormsSection() {
     const formSections = [
         { id: 'profile', element: <ProfileForm /> },
         { id: 'experience', element: <ExperienceForm /> },
@@ -27,10 +25,8 @@ export default function FormsSection({ methods }: FormsSectionProps) {
 
     return (
         <div className="space-y-4">
-            <FormProvider {...methods}>
                 <div className="ps-6"> <PersonalInfoForm /></div>
                 <SortableFormWrapper items={formSections} />
-            </FormProvider>
         </div>
     );
 }
