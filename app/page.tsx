@@ -37,6 +37,7 @@ export default function Home() {
             hobby: [{ id: uuidv4(), description: ''}],
             footerTitle: "Stopka",
             footer: "",
+            image: undefined,
         }
     });
 

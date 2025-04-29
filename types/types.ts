@@ -42,4 +42,5 @@ export type FormData = {
     hobby?: Hobby[];
     footerTitle?: string;
     footer?: string;
+    image?: File ;
 };

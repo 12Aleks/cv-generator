@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import SkillsForm from "@/app/components/SkillsForm";
+
 
 export const languageSchema = z.object({
     id: z.string(),
@@ -11,7 +11,18 @@ export const languageSchema = z.object({
 export const hobbySchema = z.object({
     id: z.string(),
     description: z.string(),
-})
+});
+const isClient = typeof window !== 'undefined';
+export const imageSchema = isClient
+    ? z
+        .instanceof(File)
+        .refine((file) => file.size <= 5 * 1024 * 1024, {
+            message: 'File size must be less than 5MB',
+        })
+        .refine((file) => ['image/jpeg', 'image/png', 'image/gif'].includes(file.type), {
+            message: 'Only JPG, PNG, and GIF files are allowed',
+        })
+    : z.any();
 
 export const personalInfoSchema = z.object({
     personalInfoTitle: z.string(),
@@ -39,4 +50,5 @@ export const personalInfoSchema = z.object({
     hobby: z.array(hobbySchema).optional(),
     footerTitle: z.string().optional(),
     footer: z.string().optional(),
+    image: imageSchema.optional(),
 });
