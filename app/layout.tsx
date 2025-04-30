@@ -26,7 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen`}>
+      <body
+          data-new-gr-c-s-check-loaded="14.1233.0" data-gr-ext-installed=""
+          className={`${geistSans.variable} ${geistMono.variable} min-h-screen`}>
         {children}
       </body>
     </html>
