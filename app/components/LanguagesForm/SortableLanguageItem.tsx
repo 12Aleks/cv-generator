@@ -26,7 +26,7 @@ function SortableLanguageItem({ id, index, lang, updateLang, removeLang,}: IProp
             ref={setNodeRef}
             style={style}
             {...attributes}
-            className="flex items-center gap-2 bg-gray-100 p-2 rounded-md shadow-sm"
+            className="flex items-center gap-2 bg-gray-100 p-2 rounded-md shadow-sm "
         >
             <GripVertical
                 {...listeners}

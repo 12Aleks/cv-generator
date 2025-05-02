@@ -1,4 +1,6 @@
 import ExperienceForm from "@/app/components/ExperienceForm";
+import {RGB, rgb} from "pdf-lib";
+import {string} from "zod";
 
 export type Language = {
     id: string;
@@ -42,5 +44,11 @@ export type FormData = {
     hobby?: Hobby[];
     footerTitle?: string;
     footer?: string;
-    image?: File ;
+    image?: File;
 };
+
+export type PersonalData = {
+    text: string;
+    fontSize: number;
+    color?: RGB;
+}

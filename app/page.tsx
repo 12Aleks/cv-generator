@@ -44,10 +44,10 @@ export default function Home() {
     return (
         <>
             <Navbar/>
-            <div className="max-w-full 2xl:max-w-3/4 mx-auto px-3 py-10">
+            <div className="max-w-full mx-auto px-3 py-10">
                 <FormProvider {...methods}>
                     <div className="grid grid-cols-[1fr_1px_1fr] gap-4 min-h-screen-minus-130">
-                        <div className="space-y-4">
+                        <div className="space-y-4 max-w-full 2xl:max-w-3/4 w-full ml-auto">
                             <FormsSection  />
                         </div>
                         <div className="bg-gray-300" />
