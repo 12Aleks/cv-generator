@@ -1,4 +1,4 @@
-import {PDFPage, PDFFont, rgb, RGB} from 'pdf-lib';
+import {PDFPage, PDFFont, rgb, RGB, PDFDocument} from 'pdf-lib';
 import {PersonalData} from "@/types/types";
 
 interface IDrawCenteredTextOptions {
@@ -6,12 +6,13 @@ interface IDrawCenteredTextOptions {
     text: string;
     font: PDFFont;
     fontSize: number;
-    x?: number;
-    y: number;
+    startX?: number;
+    startY: number;
     containerWidth?: number;
     color?: RGB;
     xOffset?: number;
     maxWidth?: number;
+    underline?: boolean
 }
 
 interface IDrawCenteredTextGroupOptions {
@@ -24,21 +25,25 @@ interface IDrawCenteredTextGroupOptions {
     lineGap: number;
 }
 
-export function drawCenteredTextOnPage({   page, text, font, fontSize, y, x = 0,
-                                           containerWidth = 0,
-                                           color = rgb(1, 1, 1), xOffset = 0,
-                                           maxWidth = containerWidth
-                                       }: IDrawCenteredTextOptions) {
+export function drawCenteredTextOnPage(data: IDrawCenteredTextOptions) {
+    const {
+        page, text, font, fontSize, startY, startX = 0, containerWidth = 0,
+        color = rgb(1, 1, 1), xOffset = 0,
+        maxWidth = containerWidth, underline = false
+    } = data;
     const textWidth: number = font.widthOfTextAtSize(text, fontSize);
-    const xCenter: number = x? x :  xOffset + (containerWidth - textWidth) / 2;
+    const xCenter: number = startX ? startX : xOffset + (containerWidth - textWidth) / 2;
+    let currentY = startY;
     page.drawText(text, {
-        x : xCenter,
-        y,
+        x: xCenter,
+        y: currentY,
         size: fontSize,
         font,
         color,
         maxWidth,
     });
+
+    underline && underLine({font, text, fontSize, page}, currentY);
 }
 
 export function drawCenteredTextGroup({
@@ -53,20 +58,52 @@ export function drawCenteredTextGroup({
     let currentY = startY;
 
     for (const data of personalData) {
-        const { text, fontSize, color = rgb(1, 1, 1) } = data;
+        const {text, fontSize, color = rgb(0, 0, 0), icon, underline, top = 0} = data;
 
-        const textWidth = font.widthOfTextAtSize(text, fontSize);
-        const x = startX? startX: (containerWidth - textWidth) / 2;
+        const iconSize = fontSize + 2;
+        const iconMargin = 5;
+
+        let textX = startX || 0;
+
+        if (icon) {
+            page.drawImage(icon, {
+                x: textX,
+                y: currentY - iconSize * 0.25,
+                width: iconSize,
+                height: iconSize,
+            });
+            textX += iconSize + iconMargin;
+        }
 
         page.drawText(text, {
-            x,
+            x: textX,
             y: currentY,
             size: fontSize,
             font,
             color,
-            maxWidth: containerWidth - 40,
         });
 
+        underline && underLine({font, text, fontSize, page}, currentY)
         currentY -= lineGap;
     }
+}
+
+function underLine({font, text, fontSize, page}: Pick<IDrawCenteredTextOptions, "font" | "text" | "fontSize" | "page">,
+                   currentY: number) {
+    const textWidth = font.widthOfTextAtSize(text, fontSize);
+    const underlineY = currentY - 2;
+
+    page.drawLine({
+        start: {x: 10, y: underlineY - 3},
+        end: {x: 70 + textWidth, y: underlineY - 3},
+        thickness: .5,
+        color: rgb(0.7, 0.7, 0.7),
+    });
+}
+
+
+export async function getIcon(path: string, pdfDoc: PDFDocument) {
+    const iconBytes = await fetch(path).then(res => res.arrayBuffer());
+    const icon = await pdfDoc.embedPng(iconBytes);
+    return icon
 }

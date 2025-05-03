@@ -1,5 +1,5 @@
 import ExperienceForm from "@/app/components/ExperienceForm";
-import {RGB, rgb} from "pdf-lib";
+import {PDFImage, RGB, rgb} from "pdf-lib";
 import {string} from "zod";
 
 export type Language = {
@@ -50,5 +50,8 @@ export type FormData = {
 export type PersonalData = {
     text: string;
     fontSize: number;
+    top?: number,
     color?: RGB;
+    icon?: PDFImage;
+    underline?: boolean,
 }
