@@ -33,7 +33,7 @@ export const personalInfoSchema = z.object({
     phone: z.string().optional(),
     citizenship: z.string().optional(),
     site: z.string().optional(),
-    birthDate: z.string().optional(),
+    birthDate: z.string().date('Your data is not a date').optional(),
     birthPlace: z.string().optional(),
     driversLicense: z.string().optional(),
     gender: z.string().optional(),

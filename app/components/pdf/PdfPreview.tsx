@@ -5,7 +5,7 @@ import {PDFDocument, rgb, StandardFonts} from 'pdf-lib';
 import {useFormContext, useWatch} from 'react-hook-form';
 import {FormData, PersonalData} from '@/types/types';
 import {addImageToPdf, processImageToCircle} from '@/app/lib/implementImage';
-import {drawCenteredTextGroup, drawCenteredTextOnPage, getIcon} from "@/app/lib/pdfUtils";
+import {drawCenteredTextGroup, drawCenteredTextOnPage, getIcon, splitTextIntoLines} from "@/app/lib/pdfUtils";
 
 export default function PdfPreview() {
     const {control} = useFormContext<FormData>();
@@ -14,7 +14,6 @@ export default function PdfPreview() {
 
     const ellipseColor = rgb(0.1, 0.45, 0.75);
     const mainTextColor = rgb(0.2, 0.2, 0.3);
-
 
     useEffect(() => {
         let currentUrl: string | null = null;
@@ -28,8 +27,9 @@ export default function PdfPreview() {
                 const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
                 const leftColumnWidth = 200;
 
+                const getString = (val: any) => typeof val === 'string' ? val.trim() : '';
                 // Fields
-                const fullName: string = `${formData.firstName || ''} ${formData.lastName || ''}`.trim();
+                const fullName = `${getString(formData.firstName)} ${getString(formData.lastName)}`.trim();
                 const email: string = `${formData.email}`.trim();
                 const phone: string = `${formData.phone}`.trim();
                 const citizenship: string = `${formData.citizenship}`.trim();
@@ -43,7 +43,6 @@ export default function PdfPreview() {
                 const profile: string = `${formData.profile}`.trim();
                 const customField: string = `${formData.customField}`.trim();
 
-                // 1. Проверяем, есть ли изображение
                 let topOffset = -100;
                 let imageUrl: string | null = null;
 
@@ -55,7 +54,6 @@ export default function PdfPreview() {
                     }
                 }
 
-                // 2. Рисуем фон
                 page.drawRectangle({
                     x: 0,
                     y: 0,
@@ -64,7 +62,6 @@ export default function PdfPreview() {
                     color: rgb(0.9, 0.9, 0.9),
                 });
 
-                // 3. Эллипс — с учетом imageOffset
                 page.drawEllipse({
                     x: leftColumnWidth / 2,
                     y: height - topOffset,
@@ -73,7 +70,6 @@ export default function PdfPreview() {
                     color: ellipseColor,
                 });
 
-                // 4. Картинка — поверх
                 if (imageUrl) {
                     await addImageToPdf(pdfDoc, {
                         imageUrl,
@@ -84,7 +80,6 @@ export default function PdfPreview() {
                     });
                 }
 
-                // 5. Белый прямоугольник перекрытия справа
                 page.drawRectangle({
                     x: leftColumnWidth,
                     y: height - 200,
@@ -93,21 +88,31 @@ export default function PdfPreview() {
                     color: rgb(1, 1, 1),
                 });
 
-                // 6. Текст
                 let leftY = height - 50;
                 const lineGap = 20;
 
+                // FULL NAME (with line wrapping)
                 if (fullName) {
-                    drawCenteredTextOnPage({
-                        page,
+                    const fullNameLines = splitTextIntoLines({
                         text: fullName,
                         font,
                         fontSize: 20,
-                        startY: leftY,
-                        containerWidth: leftColumnWidth,
+                        maxWidth: leftColumnWidth - 20,
                     });
-                    leftY -= lineGap;
+
+                    for (const line of fullNameLines) {
+                        drawCenteredTextOnPage({
+                            page,
+                            text: line,
+                            font,
+                            fontSize: 20,
+                            startY: leftY,
+                            containerWidth: leftColumnWidth,
+                        });
+                        leftY -= lineGap;
+                    }
                 }
+
                 const top = topOffset + (topOffset === -60 ? -150 : -30);
 
                 (email || phone || citizenship || gender) && drawCenteredTextOnPage({
@@ -125,98 +130,125 @@ export default function PdfPreview() {
 
                 const personalData: PersonalData[] = [];
 
-                email && personalData.push({
+                if (email) personalData.push({
                     text: email,
-                    top: 10,
-                    fontSize: 12,
-                    color: mainTextColor,
-                    icon: await getIcon('/icons/phone-call.png', pdfDoc),
-                });
-
-                phone && personalData.push({
-                    text: phone,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/mail.png', pdfDoc),
                 });
 
-                citizenship && personalData.push({
+                if (phone) personalData.push({
+                    text: phone,
+                    fontSize: 12,
+                    color: mainTextColor,
+                    icon: await getIcon('/icons/phone-call.png', pdfDoc),
+                });
+
+                if (citizenship) personalData.push({
                     text: citizenship,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/flag.png', pdfDoc),
                 });
 
-                birthDate && personalData.push({
+                if (birthDate) personalData.push({
                     text: birthDate,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/calendar-1.png', pdfDoc),
                 });
 
-                birthPlace && personalData.push({
+                if (birthPlace) personalData.push({
                     text: birthPlace,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/map-pin-house.png', pdfDoc),
                 });
 
-                driversLicense && personalData.push({
+                if (driversLicense) personalData.push({
                     text: driversLicense,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/car-front.png', pdfDoc),
                 });
 
-                gender && personalData.push({
+                if (gender) personalData.push({
                     text: gender,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/venus-and-mars.png', pdfDoc),
                 });
 
-                maritalStatus && personalData.push({
+                if (maritalStatus) personalData.push({
                     text: maritalStatus,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/venus-and-mars.png', pdfDoc),
                 });
 
-                site && personalData.push({
+                if (site) personalData.push({
                     text: site,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/app-window.png', pdfDoc),
                 });
 
-                linkedin && personalData.push({
+                if (linkedin) personalData.push({
                     text: linkedin,
                     fontSize: 12,
                     color: mainTextColor,
                     icon: await getIcon('/icons/linkedin.png', pdfDoc),
                 });
 
-                profile && personalData.push({
-                    text: profile,
-                    fontSize: 12,
-                    color: mainTextColor,
-                    icon: await getIcon('/icons/mail.png', pdfDoc),
-                });
+                if (profile) {
+                    const profileLines = splitTextIntoLines({
+                        text: profile,
+                        font,
+                        fontSize: 12,
+                        maxWidth: leftColumnWidth - 20,
+                    });
 
-                //all group
-                personalData.length > 0 && drawCenteredTextGroup({
-                    page,
-                    personalData,
-                    font,
-                    startX: 10,
-                    startY: height + top - 30,
-                    containerWidth: leftColumnWidth,
-                    lineGap: lineGap + 5,
-                });
-                leftY -= lineGap * personalData.length;
+                    for (const line of profileLines) {
+                        personalData.push({
+                            text: line,
+                            fontSize: 12,
+                            color: mainTextColor,
+                            icon: await getIcon('/icons/mail.png', pdfDoc),
+                        });
+                    }
+                }
 
+                if (customField) {
+                    const customFieldLines = splitTextIntoLines({
+                        text: customField,
+                        font,
+                        fontSize: 12,
+                        maxWidth: leftColumnWidth - 20,
+                    });
 
-                // Сохраняем и отображаем PDF
+                    for (const line of customFieldLines) {
+                        personalData.push({
+                            text: line,
+                            fontSize: 12,
+                            color: mainTextColor,
+                            icon: await getIcon('/icons/notebook-pen.png', pdfDoc),
+                        });
+                    }
+                }
+
+                if (personalData.length > 0) {
+                    drawCenteredTextGroup({
+                        page,
+                        personalData,
+                        font,
+                        startX: 10,
+                        startY: height + top - 30,
+                        containerWidth: leftColumnWidth,
+                        lineGap: lineGap + 5,
+                    });
+                    leftY -= lineGap * personalData.length;
+                }
+
                 const pdfBytes = await pdfDoc.save();
                 const blob = new Blob([pdfBytes], {type: 'application/pdf'});
 
@@ -241,9 +273,7 @@ export default function PdfPreview() {
     }, [formData]);
 
     return (
-        <div
-            className="overflow-hidden bg-white rounded shadow border border-black-50 aspect-[1/1.4142] flex flex-col justify-center items-center"
-        >
+        <div className="overflow-hidden bg-white rounded shadow border border-black-50 aspect-[1/1.4142] flex flex-col justify-center items-center">
             {pdfUrl ? (
                 <iframe
                     src={`${pdfUrl}#toolbar=0&navpanes=0&view=FitH`}

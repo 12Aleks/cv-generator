@@ -3,7 +3,7 @@ import {PersonalData} from "@/types/types";
 
 interface IDrawCenteredTextOptions {
     page: PDFPage;
-    text: string;
+    text: string | string[];
     font: PDFFont;
     fontSize: number;
     startX?: number;
@@ -25,16 +25,49 @@ interface IDrawCenteredTextGroupOptions {
     lineGap: number;
 }
 
+interface ISplitTextIntoLines{
+    text: string,
+    font: PDFFont,
+    fontSize: number,
+    maxWidth: number
+}
+
+export function splitTextIntoLines(props: ISplitTextIntoLines): string[] {
+    const {text, font, fontSize, maxWidth} = props
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+
+    for (const word of words) {
+        const testLine = currentLine ? `${currentLine} ${word}` : word;
+        const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+
+        if (testWidth <= maxWidth) {
+            currentLine = testLine;
+        } else {
+            if (currentLine) lines.push(currentLine);
+            currentLine = word;
+        }
+    }
+
+    currentLine && lines.push(currentLine);
+
+    return lines;
+}
+
 export function drawCenteredTextOnPage(data: IDrawCenteredTextOptions) {
     const {
         page, text, font, fontSize, startY, startX = 0, containerWidth = 0,
         color = rgb(1, 1, 1), xOffset = 0,
         maxWidth = containerWidth, underline = false
     } = data;
-    const textWidth: number = font.widthOfTextAtSize(text, fontSize);
+
+    const textString = Array.isArray(text) ? text.join(' ') : text;
+    const textWidth: number = font.widthOfTextAtSize(textString, fontSize);
     const xCenter: number = startX ? startX : xOffset + (containerWidth - textWidth) / 2;
     let currentY = startY;
-    page.drawText(text, {
+
+    page.drawText(textString, {
         x: xCenter,
         y: currentY,
         size: fontSize,
@@ -43,7 +76,7 @@ export function drawCenteredTextOnPage(data: IDrawCenteredTextOptions) {
         maxWidth,
     });
 
-    underline && underLine({font, text, fontSize, page}, currentY);
+    underline && underLine({font, text: textString, fontSize, page}, currentY);
 }
 
 export function drawCenteredTextGroup({
@@ -90,7 +123,8 @@ export function drawCenteredTextGroup({
 
 function underLine({font, text, fontSize, page}: Pick<IDrawCenteredTextOptions, "font" | "text" | "fontSize" | "page">,
                    currentY: number) {
-    const textWidth = font.widthOfTextAtSize(text, fontSize);
+    const textString = Array.isArray(text) ? text.join(' ') : text;
+    const textWidth = font.widthOfTextAtSize(textString, fontSize);
     const underlineY = currentY - 2;
 
     page.drawLine({

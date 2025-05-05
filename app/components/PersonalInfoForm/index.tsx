@@ -58,13 +58,13 @@ export default function Index() {
 
             <div className="pb-2 2xl:pb-3">
                 <label className="text-sm text-neutral-700 tracking-wide">Email</label>
-                <input {...register('email')} className="w-full bg-gray-50 border border-gray-300 p-2 rounded"/>
+                <input {...register('email')} type="email" className="w-full bg-gray-50 border border-gray-300 p-2 rounded"/>
                 {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
 
             <div className="pb-2 2xl:pb-3">
                 <label className="text-sm text-neutral-700 tracking-wide">Telefon</label>
-                <input {...register('phone')} className="w-full bg-gray-50 border border-gray-300 p-2 rounded"/>
+                <input {...register('phone')} type="text" className="w-full bg-gray-50 border border-gray-300 p-2 rounded"/>
             </div>
 
             {activeFields.map((fieldName) => {
@@ -72,7 +72,7 @@ export default function Index() {
                 return (
                     <div key={fieldName} className="relative pb-2 2xl:pb-3">
                         <label className="text-sm text-neutral-700 tracking-wide">{label}</label>
-                        <input {...register(fieldName as keyof FormData)}
+                        <input {...register(fieldName as keyof FormData)} type={fieldName.includes("birthDate") ? 'date': "text"}
                                className="w-full bg-gray-50 border border-gray-300 p-2 rounded"/>
                         <button
                             type="button"
