@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import validator from "validator";
 
 
 export const languageSchema = z.object({
@@ -30,7 +31,7 @@ export const personalInfoSchema = z.object({
     lastName: z.string().min(2, 'Min 2 characters'),
     title: z.string().max(70, 'Max 70 characters'),
     email: z.string().email('Invalid email'),
-    phone: z.string().optional(),
+    phone: z.string().refine(validator.isMobilePhone, 'Invalid phone number'),
     citizenship: z.string().optional(),
     site: z.string().optional(),
     birthDate: z.string().date('Your data is not a date').optional(),

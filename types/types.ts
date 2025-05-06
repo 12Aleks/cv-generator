@@ -1,6 +1,5 @@
-import ExperienceForm from "@/app/components/ExperienceForm";
-import {PDFImage, RGB, rgb} from "pdf-lib";
-import {string} from "zod";
+
+import {PDFImage, RGB} from "pdf-lib";
 
 export type Language = {
     id: string;
@@ -24,7 +23,7 @@ export type FormData = {
     lastName: string;
     title: string;
     email: string;
-    phone?: string;
+    phone: string;
     citizenship?: string;
     site?: string;
     birthDate?: string;
